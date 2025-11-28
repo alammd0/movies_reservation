@@ -56,6 +56,8 @@ export const login = async (req : Request, res : Response) => {
     try {
         const { email, password } = req.body;
 
+        console.log(email, password);
+
         if (!email || !password) {
             return res.status(400).json({
                 message: "Please fill all the fields",
@@ -68,6 +70,8 @@ export const login = async (req : Request, res : Response) => {
             }
         });
 
+        console.log(user)
+
         if (!user) {
             return res.status(404).json({
                 message: "User not found",
@@ -75,6 +79,8 @@ export const login = async (req : Request, res : Response) => {
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        console.log(isPasswordCorrect);
 
         if (!isPasswordCorrect) {
             return res.status(401).json({
@@ -91,6 +97,8 @@ export const login = async (req : Request, res : Response) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
             expiresIn : "1h"
         });
+
+        console.log(token);
 
         return res.status(200).json({
             message : "Login successfully",
