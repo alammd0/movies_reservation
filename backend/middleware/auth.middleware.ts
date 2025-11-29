@@ -13,7 +13,8 @@ declare global {
 
 
 export const authUserMiddleware = async (req : Request, res : Response, next : NextFunction) => {
-    const token = req.cookies.token;
+    
+    const token = req.headers.authorization; 
 
     if(!token){
         return res.status(401).json({
@@ -53,7 +54,7 @@ export const authUserMiddleware = async (req : Request, res : Response, next : N
 
 export const userRoleMiddleware = async (req : Request, res : Response, next : NextFunction) => {
     try{
-        if(req.user.role !== "ADMIN"){
+        if(req.user.role === "ADMIN"){
             return res.status(401).json({
                 message : "You are not authorized to access this route"
             })
@@ -69,7 +70,7 @@ export const userRoleMiddleware = async (req : Request, res : Response, next : N
 
 export const adminRoleMiddleware = async (req : Request, res : Response, next : NextFunction) => {
     try{
-        if(req.user.role !== "USER"){
+        if(req.user.role === "USER"){
             return res.status(401).json({
                 message : "You are not authorized to access this route"
             })
